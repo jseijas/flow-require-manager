@@ -55,6 +55,7 @@ class FlowRequireManager {
           this.log('warning', `Content not found for file ${files[i]}`);
         }
       }
+      return cb();
     }.bind(this));
   }
 }
