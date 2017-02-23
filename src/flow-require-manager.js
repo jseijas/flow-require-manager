@@ -44,7 +44,13 @@ class FlowRequireManager {
           if (!_.isArray(content)) {
             if (!content.name) {
               let extension = path.extname(files[i]);
-              content.name = path.basename(files[i], extension).toLowerCase();
+              let name = path.basename(files[i], extension).toLowerCase();
+              if (_.isFunction(content)) {
+                content = {
+                  method: content
+                };
+              }
+              content.name = name;
             }
             content = [content];
           }
