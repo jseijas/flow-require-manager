@@ -1,6 +1,6 @@
 {
   "name": "flow-require-manager",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Require manager",
   "main": "lib/index.js",
   "scripts": {

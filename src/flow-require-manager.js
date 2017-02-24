@@ -1,6 +1,7 @@
 import glob from 'glob';
 import _ from 'lodash';
 import path from 'path';
+import fs from 'fs';
 
 class FlowRequireManager {
 
@@ -39,15 +40,25 @@ class FlowRequireManager {
         return cb(err);
       }
       for (let i = 0; i < files.length; i++) {
-        let content = require(this.getAbsolutePath(files[i]));
+        let extension = path.extname(files[i]);
+        let content;
+        let absolutePath = this.getAbsolutePath(files[i]);
+        if (extension === '.json' || extension === '.js') {
+          content = require(absolutePath);
+        } else {
+          content = fs.readFileSync(absolutePath, 'utf8');
+        }
         if (content) {
           if (!_.isArray(content)) {
             if (!content.name) {
-              let extension = path.extname(files[i]);
               let name = path.basename(files[i], extension).toLowerCase();
               if (_.isFunction(content)) {
                 content = {
                   method: content
+                };
+              } else if (_.isString(content)) {
+                content = {
+                  text: content
                 };
               }
               content.name = name;
